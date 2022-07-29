@@ -68,11 +68,11 @@ def download_image(url, ups: UserParsingSettings):
         with open(full_file_path, 'wb') as f:
             f.write(img_content)
     else:
-        print(f'Image [{filename}] already exist')
+        print(f'Image already exist: {filename}')
 
 
 def main():
-    ups = UserParsingSettings("Fallout 4",  # Game name
+    ups = UserParsingSettings("Skyrim SE",  # Game name
                               "Aesthetic",  # Category name
                               1,  # Start page
                               1,  # End page
