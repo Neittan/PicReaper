@@ -2,6 +2,7 @@ import os
 import requests
 from bs4 import BeautifulSoup as bs
 import csv
+from QT_Design import *
 
 
 class UserParsingSettings:
@@ -32,8 +33,7 @@ class UserParsingSettings:
         return self.__get_game_row()[self.__get_header().index(self.category_name)]
 
     def __get_base_category_page_url(self):
-        return f'https://www.nexusmods.com/Core/Libs/Common/' \
-               f'Widgets/ImageList?RH_ImageList=categories%5B%5D:' \
+        return f'https://www.nexusmods.com/Core/Libs/Common/Widgets/ImageList?RH_ImageList=categories%5B%5D:' \
                f'{self.__get_category_id()},user_id:0,nav:true,game_id:' \
                f'{self.__get_game_id()},time:0,category_id:' \
                f'{self.__get_category_id()},show_hidden:false,page_size:16,page:'
@@ -71,18 +71,29 @@ def download_image(url, ups: UserParsingSettings):
         print(f'Image already exist: {filename}')
 
 
-def main():
-    ups = UserParsingSettings("Skyrim SE",  # Game name
-                              "Aesthetic",  # Category name
-                              1,  # Start page
-                              1,  # End page
-                              "D:/Pictures/NexusImages",  # Downloading directory
-                              "Nexus_Games_DB.csv")  # Games DB path
+def start_downloading(ups):
+    # ups = UserParsingSettings("Skyrim",  # Game name
+    #                           "Aesthetic",  # Category name
+    #                           1,  # Start page
+    #                           10,  # End page
+    #                           "D:/Pictures/NexusImages",  # Downloading directory
+    #                           "Nexus_Games_DB.csv")  # Games DB path
+
     for i in range(ups.start_page, ups.end_page+1):
         img_pages_list = get_images_pages_list_from_category_page(ups, i)
         print("Page ", i)
         for img_page in img_pages_list:
             download_image(img_page, ups)
+
+
+def main():
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
